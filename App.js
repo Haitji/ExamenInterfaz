@@ -86,6 +86,7 @@ function App() {
 
         <View style={{ flex: 4, flexDirection: 'row' }}>
           <FlatList
+          style={{flex: 1}}
           data={customData.unitatTics}
           renderItem={({item}) => <Card titulo={item.cicle} cuerpo={item.nomCicle}/>}
           keyExtractor={(unElement, index) => unElement.cicle + index.toString()}
