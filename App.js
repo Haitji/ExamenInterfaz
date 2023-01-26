@@ -30,26 +30,18 @@ function App() {
   const [profes1r,setprofes1r]=useState(customData.unitatTics[0].curs[0].profes);
 
   const [seleccionado, setSeleccionado] = useState(false);
-  const [ciclo, setCiclo] = useState("");
+  const [ciclo, setCiclo] = useState(-1);
   const [curso, setCurso] = useState(0);
 
-  const seleccionar = (select) => {
-    if (seleccionado === true && ciclo === select) {
+  const seleccionar = (index) => {
+    if (seleccionado === true && ciclo === index) {
       setSeleccionado(false);
-      setCiclo("");
+      setCiclo(-1);
     } else {
       setSeleccionado(true);
-      setCiclo(select);
+      setCiclo(index);
     }
-    if(select ==="DAM"){
-      setprofes1r(customData.unitatTics[0].curs[0].profes);
-    }else if(select ==="DAW"){
-      setprofes1r(customData.unitatTics[1].curs[0].profes);
-    }else if(select==="ASIR"){
-      setprofes1r(customData.unitatTics[2].curs[0].profes);
-    }else{
-      setprofes1r(customData.unitatTics[-1].curs[0].profes);
-    }
+    setprofes1r(customData.unitatTics[index].curs[0].profes);  
   }
 
   const seleccionarCurso = (num) => {
@@ -62,7 +54,7 @@ function App() {
 
    const Card=(props)=>{
     return(
-     <Surface style={(ciclo===props.titulo) ? styles.estilCardSeleccionat :styles.estilCard } elevation={4} onTouchEnd={()=>seleccionar(props.titulo)}>
+     <Surface style={(ciclo===props.index) ? styles.estilCardSeleccionat :styles.estilCard } elevation={4} onTouchEnd={()=>seleccionar(props.index)}>
          <Text style={styles.sectionTitle}>{props.titulo}</Text>
          <Text style={styles.sectionDescription}>{props.cuerpo}</Text>
      </Surface>
@@ -88,21 +80,9 @@ function App() {
           <FlatList
           style={{flex: 1}}
           data={customData.unitatTics}
-          renderItem={({item}) => <Card titulo={item.cicle} cuerpo={item.nomCicle}/>}
+          renderItem={({item,index}) => <Card titulo={item.cicle} cuerpo={item.nomCicle} index={index}/>}
           keyExtractor={(unElement, index) => unElement.cicle + index.toString()}
           numColumns={customData.unitatTics.length}/>
-           {/* <Surface style={(ciclo === "DAM") ? styles.estilCardSeleccionat : styles.estilCard} elevation={4} onTouchEnd={() => seleccionar("DAM")}>
-            <Text style={styles.sectionTitle}>DAM</Text>
-            <Text style={styles.sectionDescription}>Desenvolupament d'Aplicacions Multiplataforma</Text>
-          </Surface>
-          <Surface style={(ciclo === "DAW") ? styles.estilCardSeleccionat : styles.estilCard} elevation={4} onTouchEnd={() => seleccionar("DAW")}>
-            <Text style={styles.sectionTitle}>DAW</Text>
-            <Text style={styles.sectionDescription}>Desenvolupament d'Aplicacions Web</Text>
-          </Surface>
-          <Surface style={(ciclo === "ASIR") ? styles.estilCardSeleccionat : styles.estilCard} elevation={4} onTouchEnd={() => seleccionar("ASIR")}>
-            <Text style={styles.sectionTitle}>ASIR</Text>
-            <Text style={styles.sectionDescription}>Administració de Sistemes Informàtics i Xarxes</Text>
-          </Surface>  */}
         </View>
 
       </View>
