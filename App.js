@@ -19,13 +19,16 @@ import {
 } from 'react-native';
 
 
-import { Surface, Chip } from 'react-native-paper';
+import { Surface, Chip ,Avatar } from 'react-native-paper';
 import { Dimensions } from 'react-native';
 import { useState } from 'react';
 
 
 function App() {
   const customData = require('./dades.json');
+
+  const [profes1r,setprofes1r]=useState(customData.unitatTics[0].curs[0].profes);
+
   const [seleccionado, setSeleccionado] = useState(false);
   const [ciclo, setCiclo] = useState("");
   const [curso, setCurso] = useState(0);
@@ -37,6 +40,15 @@ function App() {
     } else {
       setSeleccionado(true);
       setCiclo(select);
+    }
+    if(select ==="DAM"){
+      setprofes1r(customData.unitatTics[0].curs[0].profes);
+    }else if(select ==="DAW"){
+      setprofes1r(customData.unitatTics[1].curs[0].profes);
+    }else if(select==="ASIR"){
+      setprofes1r(customData.unitatTics[2].curs[0].profes);
+    }else{
+      setprofes1r(customData.unitatTics[-1].curs[0].profes);
     }
   }
 
@@ -56,11 +68,15 @@ function App() {
      </Surface>
     )
    } 
-   const Item = ({title}) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
-    </View>
-  );
+   
+   const Profesor=(props)=>{
+    return(
+      <View style={{flexDirection:'row', alignItems:'center',justifyContent:'space-between',paddingLeft:10,paddingRight:10}}> 
+      <Avatar.Icon size={24} icon={props.icon} />
+      <Text>{props.nombre}</Text>
+      </View>
+    )
+   }
   return (
     <View style={{ flex: 1, flexDirection: 'column' }}>
       <View style={styles.View1}>
@@ -95,11 +111,9 @@ function App() {
         <Chip style={{ fontWeight: 0.5, height: 50 }} icon={(curso == 2) ? "check" : ""} onPress={() => seleccionarCurso(2)}>2r curs</Chip>
       </View>
       <View style={{ flex: 3, borderWidth: 2, borderColor: 'blue' }}>
-      <FlatList
-        data={customData.unitatTics}
-        renderItem={({item}) => <Item title={item.cicle} />}
-        keyExtractor={item => item.cicle}
-      />
+      {seleccionado? profes1r.map((values,index)=>(
+        <Profesor key={index} icon={values.foto} nombre={values.nom}/>
+      )) : <View></View> }
       </View>
       <View style={{ flex: 2, borderWidth: 2, borderColor: 'yellow' }}>
 
